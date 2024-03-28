@@ -1,0 +1,49 @@
+version: "3.9"
+services:
+  mysql:
+    container_name: mysql
+    build: mysql
+    env_file: mysql/mysql.env
+    environment:
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+  laravel:
+    container_name: laravel
+    build: php
+    ports:
+      - "80:80"
+    volumes:
+      - ./php/laravel:/var/www/laravel
+      - ./php/apache2/sites-available:/etc/apache2/sites-available
+    depends_on:
+      - mysql
+      - redis
+      # - mongodb
+  redis:
+    container_name: redis
+    # image: redis:latest
+    build: redis
+    ports:
+      - '6379:6379'
+    env_file: redis/redis.env
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-root}
+    volumes:
+      - redis_data:/data
+  # mongodb:
+  #   image: mongo:latest
+  #   container_name: mongo
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - mongodb_data:/data/db
+  #   restart: unless-stopped
+volumes:
+  mysql_data:
+  redis_data:
+  # mongodb_data:
