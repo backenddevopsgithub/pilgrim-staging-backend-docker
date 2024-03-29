@@ -1,0 +1,11 @@
+[Unit]
+Description=Docker Container Monitor and Restarter
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/root/pilgrim-staging-backend-docker/docker_restart.sh
+
+[Install]
+WantedBy=multi-user.target
