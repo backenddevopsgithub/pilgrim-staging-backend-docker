@@ -9,3 +9,6 @@ ExecStart=/root/pilgrim-staging-backend-docker/docker_restart.sh
 
 [Install]
 WantedBy=multi-user.target
+
+#sudo systemctl enable docker_restart.service
+#sudo systemctl start docker_restart.service

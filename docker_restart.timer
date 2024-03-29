@@ -1,0 +1,12 @@
+[Unit]
+Description=Run docker_restart.service every 1 minute
+
+[Timer]
+OnUnitActiveSec=1m
+Unit=docker_restart.service
+
+[Install]
+WantedBy=timers.target
+
+#sudo systemctl enable docker_restart.timer
+#sudo systemctl start docker_restart.timer
