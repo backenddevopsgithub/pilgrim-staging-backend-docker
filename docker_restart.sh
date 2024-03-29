@@ -13,3 +13,4 @@ done
 
 #sudo systemctl enable docker_restart.service
 #sudo systemctl start docker_restart.service
+#chmod +x docker_restart.sh
