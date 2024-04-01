@@ -1,5 +1,5 @@
 # echo "Adding Host started..."
-# sudo ./host-helper.sh addhost laravel.local
+# sudo ./host-helper.sh addhost pilgrimconnect.co.uk
 # echo "Adding Host completed..."
 
 # echo "Cloning Laravel ..."
