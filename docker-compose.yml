@@ -17,6 +17,7 @@ services:
     build: php
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./php/laravel:/var/www/laravel
       - ./php/apache2/sites-available:/etc/apache2/sites-available
