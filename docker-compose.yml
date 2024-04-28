@@ -23,6 +23,8 @@ services:
     volumes:
       - ./php/laravel:/var/www/laravel
       - ./php/apache2/sites-available:/etc/apache2/sites-available
+      - ./php/etc/letsencrypt/live/pilgrimconnect.co.uk:/etc/letsencrypt/live/pilgrimconnect.co.uk
+      - ./php/etc/letsencrypt/options-ssl-apache.conf:/etc/letsencrypt/options-ssl-apache.conf
     depends_on:
       - mysql
       - postgresql
