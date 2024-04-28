@@ -53,7 +53,7 @@ services:
     #      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pilgrim_stag_secret_pass}
     #      POSTGRES_HOST_AUTH_METHOD: ${POSTGRES_HOST_AUTH_METHOD:-md5}
     ports:
-      - "5422:5432"
+      - "5432:5432"
     volumes:
       - postgresql_data:/var/lib/postgresql/data
     restart: always
