@@ -2,7 +2,7 @@
 service mysql start
 
 # Wait for the MySQL service to fully start
-sleep 10
+sleep 15
 
 # MySQL root password (set your desired password here)
 ROOT_PASSWORD="pilgrim_stag_root_pass"

@@ -1,17 +1,19 @@
 version: "3.9"
 services:
+
   mysql:
     container_name: mysql
     build: mysql
     env_file: mysql/mysql.env
-    environment:
-      MYSQL_ROOT_HOST: "%"
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
-    restart: always  # Restart policy set to always
+#    environment:
+#      MYSQL_ROOT_HOST: "%"
+#      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    restart: always
+
   laravel:
     container_name: laravel
     build: php
@@ -23,30 +25,98 @@ services:
       - ./php/apache2/sites-available:/etc/apache2/sites-available
     depends_on:
       - mysql
+      - postgresql
       - redis
       # - mongodb
-    restart: always  # Restart policy set to always
+    restart: always
+
   redis:
     container_name: redis
     # image: redis:latest
     build: redis
+    env_file: redis/redis.env
+#    environment:
+#      REDIS_PASSWORD: ${REDIS_PASSWORD:-root}
     ports:
       - '6379:6379'
-    env_file: redis/redis.env
-    environment:
-      REDIS_PASSWORD: ${REDIS_PASSWORD:-root}
     volumes:
       - redis_data:/data
-    restart: always  # Restart policy set to always
-  # mongodb:
-  #   image: mongo:latest
-  #   container_name: mongo
-  #   ports:
-  #     - "27017:27017"
-  #   volumes:
-  #     - mongodb_data:/data/db
-  #   restart: unless-stopped
+    restart: always
+
+  postgresql:
+    container_name: postgresql
+    build: postgresql
+    env_file: postgresql/postgresql.env
+    #    environment:
+    #      POSTGRES_DB: ${POSTGRES_DB:-pilgrim_stag_db}
+    #      POSTGRES_USER: ${POSTGRES_USER:-pilgrim_stag_user}
+    #      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pilgrim_stag_secret_pass}
+    #      POSTGRES_HOST_AUTH_METHOD: ${POSTGRES_HOST_AUTH_METHOD:-md5}
+    ports:
+      - "5422:5432"
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+    restart: always
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@stag.secret.pass}
+#      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-pgadmin_stag_secret_pass}
+    env_file: postgresql/pgadmin.env
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgresql
+
+#   mongodb:
+#     image: mongo:latest
+#     container_name: mongo
+#     ports:
+#       - "27017:27017"
+#     volumes:
+#       - mongodb_data:/data/db
+#     restart: unless-stopped
+#
+#  pgsql1:
+#    container_name: pgsql1
+#    build: postgresql
+#    ports:
+#      - "5422:5432"
+#    env_file: postgresql/postgresql.env
+#    environment:
+#      POSTGRES_DB: ${POSTGRES_DB:-pilgrim_stag_db}
+#      POSTGRES_USER: ${POSTGRES_USER:-pilgrim_stag_user}
+#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pilgrim_stag_secret_pass}
+#      POSTGRES_HOST_AUTH_METHOD: ${POSTGRES_HOST_AUTH_METHOD:-md5}
+#    volumes:
+#      - pgsql1_data:/var/lib/postgresql/data
+#    restart: always
+#
+#  pgsql2:
+#    container_name: pgsql2
+#    image: postgres:latest
+#    restart: always
+#    environment:
+#      - POSTGRES_HOST_AUTH_METHOD=trust
+#      - POSTGRES_PASSWORD=postgres
+##      POSTGRES_DB: pilgrim_stag_db
+##      POSTGRES_USER: pilgrim_stag_user
+##      POSTGRES_PASSWORD: pilgrim_stag_secret_pass
+##      POSTGRES_HOST_AUTH_METHOD: md5
+#    ports:
+#      - "5442:5432"
+#    volumes:
+#      - pgsql2_data:/var/lib/postgresql/data
+##    command: postgres -c listen_addresses='*'
+
 volumes:
   mysql_data:
   redis_data:
-  # mongodb_data:
+  postgresql_data:
+#  db_data:
+#  pgsql1_data:
+#  pgsql2_data:
+#  mongodb_data:
