@@ -65,12 +65,13 @@ COPY apache2/sites-available /etc/apache2/sites-available
 COPY apache2/ssl/* /etc/apache2/ssl/
 RUN a2dissite 000-default
 RUN a2ensite laravel
+RUN a2ensite laravel-ssl
 RUN service apache2 restart
 
 WORKDIR /var/www/laravel
 
-EXPOSE 80
-EXPOSE 443
+#EXPOSE 80
+#EXPOSE 443
 
 
 #openssl genrsa -out pilgrimconnect.co.uk.key 2048
